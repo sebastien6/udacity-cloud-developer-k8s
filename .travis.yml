@@ -1,0 +1,39 @@
+language: minimal
+
+services: docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.23.2
+
+before_install:
+  - docker -v && docker-compose -v
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - pip install awscli --upgrade --user
+  - sudo curl --location -o /usr/local/bin/kubectl https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
+  - sudo chmod +x /usr/local/bin/kubectl
+  - curl --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+  - tar xz -C /tmp
+  - sudo mv -v /tmp/eksctl /usr/local/bin
+  - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
+  - chmod +x ./aws-iam-authenticator
+  - sudo mv -v ./aws-iam-authenticator /usr/local/bin
+  - mkdir -p ~/.aws
+  - cat > ~/.aws/credentials << EOL
+  [default]
+  aws_access_key_id = ${AWS_ACCESS_KEY_ID}
+  aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
+  EOL
+  - cat > ~/.aws/config << EOL
+  [default]
+  region = ${AWS_REGION}
+  output = json
+  EOL
+
+
+install:
+  - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker-compose -f deployment/docker/docker-compose-build.yaml push
