@@ -1,0 +1,14 @@
+eksctl create udacity-cluster \
+--name prod \
+--tags Owner=Sebastien,Project=Udacity Cloud Developer project3
+--region us-east-1 \
+--version 1.14
+--nodegroup-name standard-workers \
+--node-type t2.micro \
+--nodes 3 \
+--nodes-min 1 \
+--nodes-max 4 \
+--ssh-access \
+--ssh-public-key k8-cluster-sev-dev.pem \
+--managed
+--asg-access

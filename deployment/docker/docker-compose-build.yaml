@@ -1,0 +1,22 @@
+version: "3"
+services:
+  reverseproxy:
+    build:
+      context: ../../reverseproxy
+    image: sebastien6/reverseproxy
+  backend_user:
+    build:
+      context: ../../api-user
+    image: sebastien6/api-user
+  backend_feed:
+    build:
+      context: ../../api-feed  
+    image: sebastien6/api-feed
+  backend_image_filter:
+    build:
+      context: ../../api-image-filter
+    image: sebastien6/api-image-filter
+  frontend:
+    build:
+      context: ../../frontend  
+    image: sebastien6/udacity-frontend
