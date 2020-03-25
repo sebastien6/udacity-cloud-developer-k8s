@@ -20,18 +20,7 @@ before_install:
   - curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.15.10/2020-02-22/bin/linux/amd64/aws-iam-authenticator
   - chmod +x ./aws-iam-authenticator
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
-  - mkdir -p ~/.aws
-  - cat > ~/.aws/credentials << EOL
-  [default]
-  aws_access_key_id = ${AWS_ACCESS_KEY_ID}
-  aws_secret_access_key = ${AWS_SECRET_ACCESS_KEY}
-  EOL
-  - cat > ~/.aws/config << EOL
-  [default]
-  region = ${AWS_REGION}
-  output = json
-  EOL
-
+  - sh aws_credentials.sh
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
