@@ -25,3 +25,13 @@ install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f deployment/docker/docker-compose-build.yaml push
+  # - kubectl apply -f deployment/k8s/api-feed/deployment.yaml
+  # - kubectl apply -f deployment/k8s/api-feed/kubernetes/service.yaml
+  # - kubectl apply -f deployment/k8s/api-user/deployment.yaml
+  # - kubectl apply -f deployment/k8s/api-user/kubernetes/service.yaml
+  # - kubectl apply -f deployment/k8s/api-image-filter/deployment.yaml
+  # - kubectl apply -f deployment/k8s/api-image-filter/kubernetes/service.yaml
+  # - kubectl apply -f deployment/k8s/api-reverseproxy/deployment.yaml
+  # - kubectl apply -f deployment/k8s/api-reverseproxy/kubernetes/service.yaml
+  # - kubectl apply -f deployment/k8s/api-frontend/deployment.yaml
+  # - kubectl apply -f deployment/k8s/api-frontend/kubernetes/service.yaml

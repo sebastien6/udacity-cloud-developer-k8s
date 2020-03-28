@@ -1,0 +1,8 @@
+namespace: octank
+secretGenerator:
+- name: database-credentials
+  literals:
+  - postgres_username=<username>
+  - postgres_password=<password>
+generatorOptions:
+  disableNameSuffixHash: true

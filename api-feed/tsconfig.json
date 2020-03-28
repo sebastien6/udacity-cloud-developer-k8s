@@ -11,7 +11,8 @@
     // "declarationMap": true,                /* Generates a sourcemap for each corresponding '.d.ts' file. */
     "sourceMap": true,                     /* Generates corresponding '.map' file. */
     // "outFile": "./",                       /* Concatenate and emit output to single file. */
-    "outDir": "../api-feed/www",                        /* Redirect output structure to the directory. */
+    // "outDir": "../api-feed/www",                        /* Redirect output structure to the directory. */
+    "outDir": "www",  
     // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
     // "composite": true,                     /* Enable project compilation */
     // "removeComments": true,                /* Do not emit comments to output. */
@@ -41,7 +42,8 @@
     "baseUrl": "/",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
       "*": [
-          "../api-feed/node_modules/*"
+          // "../api-feed/node_modules/*"
+          "node_modules/*"
       ]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
@@ -62,6 +64,7 @@
     "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
   },
     "include": [
-        "../api-feed/src/**/*"
+        "src/**/*"
+        // "../api-feed/src/**/*"
     ]
 }

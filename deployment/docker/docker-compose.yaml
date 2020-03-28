@@ -1,15 +1,15 @@
 version: "3"
 services:
   reverseproxy:
-      image: sebastien6/reverseproxy
+      image: sebastien6/udacity-udagram-api-reverseproxy
       ports:
           - 8080:8080
       restart: always
       depends_on:
-        - backend-user
-        - backend-feed     
-  backend-user:
-    image: sebastien6/api-user
+        - backend_user
+        - backend_feed     
+  backend_user:
+    image: sebastien6/udacity-udagram-api-user
     environment:
       POSTGRES_USERNAME: $POSTGRES_USERNAME
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD 
@@ -19,9 +19,9 @@ services:
       AWS_PROFILE: $AWS_PROFILE 
       AWS_BUCKET: $AWS_BUCKET
       JWT_SECRET: $JWT_SECRET
-      URL: "http://localhost:8100"
-  backend-feed:
-    image: sebastien6/api-feed
+      # URL: "http://localhost:8100"
+  backend_feed:
+    image: sebastien6/udacity-udagram-api-feed
     volumes:
       - $HOME/.aws:/root/.aws
     environment:
@@ -33,23 +33,15 @@ services:
       AWS_PROFILE: $AWS_PROFILE 
       AWS_BUCKET: $AWS_BUCKET
       JWT_SECRET: $JWT_SECRET
-      URL: "http://localhost:8100"
-  backend-feed:
-    image: sebastien6/api-feed
+      # URL: "http://localhost:8100"
+  backend_image_filter:
+    image: sebastien6/udacity-udagram-api-imgfilter
     volumes:
       - $HOME/.aws:/root/.aws
-    environment:
-      POSTGRES_USERNAME: $POSTGRES_USERNAME
-      POSTGRES_PASSWORD: $POSTGRES_PASSWORD 
-      POSTGRES_DB: $POSTGRES_DB 
-      POSTGRES_HOST: $POSTGRES_HOST 
-      AWS_REGION: $AWS_REGION 
-      AWS_PROFILE: $AWS_PROFILE 
-      AWS_BUCKET: $AWS_BUCKET
-      JWT_SECRET: $JWT_SECRET
-      URL: "http://localhost:8100"
+    # environment:
+    #   URL: "http://localhost:8100"
   frontend:
-    image: sebastien6/udacity-frontend
+    image: sebastien6/udacity-udagram-frontend
     ports:
       - "8100:80"
 

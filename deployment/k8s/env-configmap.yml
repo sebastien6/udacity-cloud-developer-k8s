@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-config
+  namespace: env-config
+  labels:
+    app: udagram
+data:
+    POSTGRES_DB: udagramdev
+    POSTGRES_HOST: udagramdev.cbf509ec2npp.us-east-1.rds.amazonaws.com 
+    AWS_REGION: us-east-1 
+    AWS_PROFILE: default 
+    AWS_BUCKET: udagram-sebastien-dev
+    JWT: fjadjsfjaoidsjhfhapuh154tqr253yet
+    URL: http://reverseproxy:8080

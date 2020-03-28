@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-image-filter
+  labels:
+    app: api-image-filter
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-image-filter
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: api-image-filter
+    spec:
+      containers:
+      - image: sebastien6/udacity-udagram-api-imgfilter:latest
+        imagePullPolicy: Always
+        name: api-image-filter
+        ports:
+        - containerPort: 8080
+          protocol: TCP
