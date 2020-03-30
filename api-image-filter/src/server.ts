@@ -45,6 +45,13 @@ import connect from 'connect-timeout';
   // error handler middleware
   app.use(errorMiddleware);
 
+  //CORS Should be restricted
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+  });
+
   // filteredimage Endpoint
   // take an image url and return the filtered image
   app.get("/filteredimage", validationImageURL(), async ( req: Request, res: Response, next: NextFunction ) => {
