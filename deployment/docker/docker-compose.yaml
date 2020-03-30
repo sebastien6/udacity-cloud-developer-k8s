@@ -42,6 +42,8 @@ services:
     #   URL: "http://localhost:8100"
   frontend:
     image: sebastien6/udacity-udagram-frontend
+    environment:
+      REVERSEPROXY_URL: $REVERSEPROXY_URL
     ports:
       - "8100:80"
 
