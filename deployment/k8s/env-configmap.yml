@@ -12,4 +12,4 @@ data:
     AWS_PROFILE: default 
     AWS_BUCKET: udagram-sebastien-dev
     JWT: fjadjsfjaoidsjhfhapuh154tqr253yet
-    URL: http://reverseproxy:8080
+    REVERSEPROXY_URL: http://reverseproxy:8080

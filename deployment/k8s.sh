@@ -25,13 +25,13 @@ rm metrics-server-$DOWNLOAD_VERSION.tar.gz
 
 # deploy kubernete web UI
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
-kubectl apply -f deployment/k8s/eks-admin-service-account.yaml
+kubectl apply -f k8s/eks-admin-service-account.yml
 
 # create secret namespace
-kubectl kustomize deployment/k8s/kustomization.yml
+kubectl kustomize k8s/kustomization.yml
 kubectl create namespace octank
-kubectl apply -f deployment/k8s/secret.yaml
+kubectl apply -f k8s/secret.yaml
 
 # create environment variable namespace
 kubectl create namespace env-config
-kubectl apply -f deployment/k8s/env-configmap.yaml
+kubectl apply -f k8s/env-configmap.yml
