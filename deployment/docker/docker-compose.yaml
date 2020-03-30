@@ -1,7 +1,7 @@
 version: "3"
 services:
   reverseproxy:
-      image: sebastien6/udacity-udagram-api-reverseproxy
+      image: sebastien6/udacity-udagram-reverseproxy
       ports:
           - 8080:8080
       restart: always
