@@ -20,7 +20,7 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
   - sh aws_credentials.sh
-  - aws eks --region "$AWS_REGION" update-kubeconfig --name "$EKS_CLUSTER_NAME"
+  - aws eks --region us-east-1 update-kubeconfig --name udagram
   - kubectl get svc
 
 install:
