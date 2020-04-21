@@ -20,6 +20,8 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
   - sh aws_credentials.sh
+  - aws eks list-clusters
+  - aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
