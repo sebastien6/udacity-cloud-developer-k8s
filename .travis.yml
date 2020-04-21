@@ -21,7 +21,6 @@ before_install:
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
   - sh aws_credentials.sh
   - aws eks --region us-east-1 update-kubeconfig --name udagram
-  - kubectl get svc
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 

@@ -17,6 +17,7 @@ The RDS service for postgres is hosted on a VPC with no public access, and the E
 
 1. [Prerequisite](#Prerequisite)
 2. [RDS and EKS deployment](#RDS-and-EKS-deployment)
+3. [Test deployment](#Test-deployment)
 3. [Udagram microservice deployment](#Udagram-microservice-deployment)
 4. [Cleanup](#cleanup)
 
