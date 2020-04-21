@@ -25,7 +25,7 @@ install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f deployment/docker/docker-compose-build.yaml push
-  - aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+  - aws eks --region us-east-1 update-kubeconfig --name udagram
   - kubectl apply -f deployment/k8s/api-feed/deployment.yml
   - kubectl apply -f deployment/k8s/api-feed/kubernetes/service.yml
   - kubectl apply -f deployment/k8s/api-user/deployment.yml
