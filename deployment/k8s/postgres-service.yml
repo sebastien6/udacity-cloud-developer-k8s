@@ -1,0 +1,15 @@
+# RDS postgre service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres-service
+  name: postgres-service
+  namespace: udagram
+spec:
+  externalName: udagram.cbf509ec2npp.us-east-1.rds.amazonaws.com 
+  selector:
+    app: postgres-service
+  type: ExternalName
+status:
+  loadBalancer: {}

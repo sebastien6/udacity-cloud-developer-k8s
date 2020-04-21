@@ -4,17 +4,17 @@ metadata:
   name: api-user
   labels:
     app: api-user
-  namespace: default
+  namespace: udagram
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: api-user
-  # strategy:
-  #   rollingUpdate:
-  #     maxSurge: 25%
-  #     maxUnavailable: 25%
-  #   type: RollingUpdate
+  strategy:
+    rollingUpdate:
+      maxSurge: 5%
+      maxUnavailable: 5%
+    type: RollingUpdate
   template:
     metadata:
       labels:

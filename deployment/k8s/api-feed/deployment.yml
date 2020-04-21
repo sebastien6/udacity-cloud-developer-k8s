@@ -4,7 +4,7 @@ metadata:
   name: api-feed
   labels:
     app: api-feed
-  namespace: default
+  namespace: udagram
 spec:
   replicas: 1
   selector:
@@ -12,8 +12,8 @@ spec:
       app: api-feed
   strategy:
     rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
+      maxSurge: 5%
+      maxUnavailable: 5%
     type: RollingUpdate
   template:
     metadata:

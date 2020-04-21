@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: test
+        image: k8s.gcr.io/busybox
+        command: [ "sh", "-c"]
+        args:
+        - while true; do
+            echo -en '\n';
+            printenv POSTGRES_HOST POSTGRES_DB POSTGRES_USERNAME POSTGRES_PASSWORD MY_POD_NAMESPACE;
+            printenv AWS_REGION AWS_PROFILE AWS_BUCKET JWT_SECRET;
+            sleep 10;
+          done;
+        env:
+          - name: JWT_SECRET
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: JWT_SECRET
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: POSTGRES_DB
+          - name: POSTGRES_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: POSTGRES_HOST
+          - name: AWS_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: AWS_REGION
+          - name: AWS_PROFILE
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: AWS_PROFILE
+          - name: AWS_BUCKET
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: AWS_BUCKET
+          - name: URL
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: URL
+          - name: POSTGRES_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: postgres_username
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: database-credentials
+                key: postgres_password
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
