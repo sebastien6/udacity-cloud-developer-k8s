@@ -4,15 +4,15 @@ services:
     build:
       context: ../../reverseproxy
     image: sebastien6/udacity-udagram-reverseproxy
-  backend_user:
+  api-user:
     build:
       context: ../../api-user
     image: sebastien6/udacity-udagram-api-user
-  backend_feed:
+  api-feed:
     build:
       context: ../../api-feed  
     image: sebastien6/udacity-udagram-api-feed
-  backend_image_filter:
+  api-image-filter:
     build:
       context: ../../api-image-filter
     image: sebastien6/udacity-udagram-api-imgfilter
