@@ -4,6 +4,8 @@ services: docker
 
 env:
   - DOCKER_COMPOSE_VERSION=1.23.2
+  - AWS_REGION=${AWS_REGION}
+  - EKS_CLUSTER_NAME=${EKS_CLUSTER_NAME}
 
 before_install:
   - docker -v && docker-compose -v
@@ -20,7 +22,8 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
   - sh aws_credentials.sh
-  - aws eks --region us-east-1 update-kubeconfig --name udagram
+  - aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+  - kubectl get svc
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
