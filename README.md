@@ -188,6 +188,12 @@ aws ec2 authorize-security-group-ingress --group-id ${RDS_VPC_SECURITY_GROUP_ID}
 ```
 
 ## Kubernete dashboard deployment
+### update kubectl config
+Enter the command to update the kubectl config with your new EKS cluster
+```sh
+aws eks --region $AWS_REGION update-kubeconfig --name $EKS_CLUSTER_NAME
+```
+
 ### Metric server
 Deploy the metric server
 ```sh
