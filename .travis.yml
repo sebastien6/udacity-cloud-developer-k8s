@@ -27,13 +27,13 @@ install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f deployment/docker/docker-compose-build.yaml push
   - kubectl apply -f deployment/k8s/api-feed/deployment.yml
-  - kubectl apply -f deployment/k8s/api-feed/kubernetes/service.yml
+  - kubectl apply -f deployment/k8s/api-feed/service.yml
   - kubectl apply -f deployment/k8s/api-user/deployment.yml
-  - kubectl apply -f deployment/k8s/api-user/kubernetes/service.yml
+  - kubectl apply -f deployment/k8s/api-user/service.yml
   - kubectl apply -f deployment/k8s/api-image-filter/deployment.yml
-  - kubectl apply -f deployment/k8s/api-image-filter/kubernetes/service.yml
+  - kubectl apply -f deployment/k8s/api-image-filter/service.yml
   - kubectl apply -f deployment/k8s/api-reverseproxy/deployment.yml
-  - kubectl apply -f deployment/k8s/api-reverseproxy/kubernetes/service.yml
-  - kubectl apply -f deployment/k8s/api-reverseproxy/kubernetes/service-external.yml
+  - kubectl apply -f deployment/k8s/api-reverseproxy/service.yml
+  - kubectl apply -f deployment/k8s/api-reverseproxy/service-external.yml
   - kubectl apply -f deployment/k8s/api-frontend/deployment.yml
-  - kubectl apply -f deployment/k8s/api-frontend/kubernetes/service.yml
+  - kubectl apply -f deployment/k8s/api-frontend/service.yml
