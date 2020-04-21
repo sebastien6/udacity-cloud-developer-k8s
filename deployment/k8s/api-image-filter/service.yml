@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: api-image-filter
   labels:
-    app: api-feed
+    app: api-image-filter
   namespace: udagram
 spec:
   selector:

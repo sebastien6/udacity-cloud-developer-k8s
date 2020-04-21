@@ -70,22 +70,15 @@ echo RDS_VPC_ID=$RDS_VPC_ID
 RDS_ROUTE_TABLE_ID=$(aws ec2 describe-route-tables --filters Name=vpc-id,Values=${RDS_VPC_ID} | jq '.RouteTables[0].RouteTableId' | sed 's/"//g')
 echo RDS_ROUTE_TALE_ID=$RDS_ROUTE_TABLE_ID
 
-# Create subnet for zone 1a
+# Create subnet for multiple zones
 SUBNET_ID_US_EAST_1A=$(aws ec2 create-subnet --availability-zone "us-east-1a" --vpc-id ${RDS_VPC_ID} --cidr-block 10.10.0.0/28 | jq '.Subnet.SubnetId' | sed 's/"//g')
 echo SUBNET_ID_US_EAST_1A=$SUBNET_ID_US_EAST_1A
-
-# Create subnet for zone 1b
 SUBNET_ID_US_EAST_1B=$(aws ec2 create-subnet --availability-zone "us-east-1b" --vpc-id ${RDS_VPC_ID} --cidr-block 10.10.0.16/28 | jq '.Subnet.SubnetId' | sed 's/"//g')
 echo SUBNET_ID_US_EAST_1B=$SUBNET_ID_US_EAST_1B
-
-# Create subnet for zone 1c
 SUBNET_ID_US_EAST_1C=$(aws ec2 create-subnet --availability-zone "us-east-1c" --vpc-id ${RDS_VPC_ID} --cidr-block 10.10.0.32/28 | jq '.Subnet.SubnetId' | sed 's/"//g')
 echo SUBNET_ID_US_EAST_1C=$SUBNET_ID_US_EAST_1C
-
-# Create subnet for zone 1d
 SUBNET_ID_US_EAST_1D=$(aws ec2 create-subnet --availability-zone "us-east-1d" --vpc-id ${RDS_VPC_ID} --cidr-block 10.10.0.48/28 | jq '.Subnet.SubnetId' | sed 's/"//g')
 echo SUBNET_ID_US_EAST_1D=$SUBNET_ID_US_EAST_1D
-
 
 # associate subnets with route table
 RT_ASSOCIATION_US_EAST_1=$(aws ec2 associate-route-table --route-table-id $RDS_ROUTE_TABLE_ID --subnet-id $SUBNET_ID_US_EAST_1A)
@@ -118,7 +111,6 @@ RDS_POSTGRES=$(aws rds create-db-instance \
   --db-subnet-group-name $DB_SUBNET_GROUP_NAME \
   --port 5432)
 echo $RDS_POSTGRES | jq
-
 ```
 
 To check its creation status enter the command:
@@ -186,7 +178,7 @@ aws ec2 describe-vpc-peering-connections --vpc-peering-connection-id ${VPC_PEERI
 Wait until the result is returning "active" as result.
 ```sh
 # Update EKS route table
-aws ec2 create-route --route-table-id ${EKS_ROUTE_TABLE_ID} --destination-cidr-block 10.10.0.0/27 --vpc-peering-connection-id ${VPC_PEERING_CONNECTION_ID}
+aws ec2 create-route --route-table-id ${EKS_ROUTE_TABLE_ID} --destination-cidr-block 10.10.0.0/26 --vpc-peering-connection-id ${VPC_PEERING_CONNECTION_ID}
 
 # Update RDS route table
 aws ec2 create-route --route-table-id ${RDS_ROUTE_TABLE_ID} --destination-cidr-block 192.168.0.0/16 --vpc-peering-connection-id ${VPC_PEERING_CONNECTION_ID}
@@ -246,7 +238,7 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 ### Kubernete postgres service deployment
 Enter the following command to capture the RDS endpoint address:
 ```sh
-aws rds describe-db-instances --db-instance-identifier udagramdev | jq '.DBInstances[0].Endpoint.Address'
+aws rds describe-db-instances --db-instance-identifier $POSTGRES_DB | jq '.DBInstances[0].Endpoint.Address'
 ```
 
 Open the file deployment/k8s/portgres-service.yml and update the value externalName with the resulting value from the previous command for a result equivalent to:
@@ -364,13 +356,105 @@ Deploy reverseproxy
 ```sh
 kubectl apply -f deployment/k8s/reverseproxy/deployment.yml
 kubectl apply -f deployment/k8s/reverseproxy/service.yml
+kubectl apply -f deployment/k8s/reverseproxy/service-external.yml
 ```
+> reverse proxy will resolved the service under the name reverseproxy on port 8080 internally and the service under the name api on port 8081 will have an external endpoint url.
 
 Deploy frontend
 ```sh
 kubectl apply -f deployment/k8s/frontend/deployment.yml
 kubectl apply -f deployment/k8s/frontend/service.yml
 ```
+
+## Test deployment
+> after the deployment, it can take a couple of minutes before the external endpoint DNS name can be resolved on the internet.
+
+List deployment
+```sh
+kubectl get deployment -n udagram
+```
+should returns something like this:
+```
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+api-feed           1/1     1            1           167m
+api-image-filter   1/1     1            1           21m
+api-user           1/1     1            1           166m
+frontend           1/1     1            1           5m2s
+reverseproxy       1/1     1            1           18m
+```
+
+List pods
+```sh
+kubectl get deployment -n udagram
+```
+should returns something like this:
+```
+NAME                                READY   STATUS    RESTARTS   AGE
+api-feed-6f7ccddf78-646db           1/1     Running   0          166m
+api-image-filter-8564f48bfd-6q9tw   1/1     Running   0          20m
+api-user-55bcbb8fd9-t25t5           1/1     Running   0          165m
+frontend-5f8b94f486-vg5dj           1/1     Running   0          4m55s
+reverseproxy-bcdc787b4-qcjdr        1/1     Running   0          17m
+```
+
+List services
+```sh
+kubectl get service -n udagram
+```
+should returns something like this:
+```
+api-feed           ClusterIP      10.100.208.5     <none>                                                                    8080/TCP         166m
+api-image-filter   ClusterIP      10.100.160.213   <none>                                                                    8080/TCP         19m
+api-user           ClusterIP      10.100.78.96     <none>                                                                    8080/TCP         19m
+frontend           LoadBalancer   10.100.85.130    a20549b44b66b477bbfe42d5e085e04f-1667707796.us-east-1.elb.amazonaws.com   80:31454/TCP     3m4s
+postgres-service   ExternalName   <none>           udagram.cbf509ec2npp.us-east-1.rds.amazonaws.com                          <none>           169m
+reverseproxy       LoadBalancer   10.100.94.40     aad91205157814a01b1f573e52d6e316-9876234.us-east-1.elb.amazonaws.com      8080:31203/TCP   16
+```
+
+Extract the API URL:
+```sh
+API=$(kubectl get service api -n udagram -o json | jq -r '.status.loadBalancer.ingress[].hostname')
+```
+
+Extract the frontend URL:
+```sh
+FRONTEND=$(kubectl get service frontend -n udagram -o json | jq -r '.status.loadBalancer.ingress[].hostname')
+echo $FRONTEND
+```
+
+Test API call:
+```sh
+curl -m3 -v $API:8080/api/v0/feed
+```
+should return something like this with http code 200:
+```
+*   Trying 107.23.216.150...
+* TCP_NODELAY set
+* Connected to aad91205157814a01b1f573e52d6e316-9876234.us-east-1.elb.amazonaws.com (107.23.216.150) port 8080 (#0)
+> GET /api/v0/feed HTTP/1.1
+> Host: aad91205157814a01b1f573e52d6e316-9876234.us-east-1.elb.amazonaws.com:8080
+> User-Agent: curl/7.58.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.17.10
+< Date: Tue, 21 Apr 2020 16:37:46 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 21
+< Connection: keep-alive
+< X-Powered-By: Express
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization
+< ETag: W/"15-vdbQeQQlK2hbke4QvAXZ1BGjGgU"
+< 
+* Connection #0 to host aad91205157814a01b1f573e52d6e316-9876234.us-east-1.elb.amazonaws.com left intact
+```
+
+Test frontend
+```sh
+curl -m3 -v $FRONTEND/
+```
+open a web browser and go the the frontend URL to enjoy the webapp.
 
 ## Cleanup
 to avoid extra cost, delete your EKS cluster and RDS instance when done with it.

@@ -4,7 +4,7 @@ metadata:
   name: api-image-filter
   labels:
     app: api-image-filter
-  namespace: default
+  namespace: udagram
 spec:
   replicas: 1
   selector:

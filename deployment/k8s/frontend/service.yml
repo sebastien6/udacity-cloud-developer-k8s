@@ -2,10 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  labels:
+    app: frontend
+  namespace: udagram
 spec:
   selector:
     app: frontend
+  type: LoadBalancer
   ports:
    -  protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 80
+      targetPort: 80
+      
