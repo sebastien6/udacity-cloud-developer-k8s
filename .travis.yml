@@ -20,12 +20,12 @@ before_install:
   - chmod +x ./aws-iam-authenticator
   - sudo mv -v ./aws-iam-authenticator /usr/local/bin
   - sh aws_credentials.sh
+  - aws eks --region us-east-1 update-kubeconfig --name udagram
 
 install:
   - docker-compose -f deployment/docker/docker-compose-build.yaml build --parallel 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker-compose -f deployment/docker/docker-compose-build.yaml push
-  - aws eks --region us-east-1 update-kubeconfig --name udagram
   - kubectl apply -f deployment/k8s/api-feed/deployment.yml
   - kubectl apply -f deployment/k8s/api-feed/kubernetes/service.yml
   - kubectl apply -f deployment/k8s/api-user/deployment.yml
