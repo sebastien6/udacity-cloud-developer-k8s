@@ -22,7 +22,7 @@ import { IndexRouter } from './controllers/v0/index.router'
   app.use(morgan('short'));
 
   // request timeout middleware
-  app.use(connect('10s'));
+  app.use(connect('30s'));
 
   // error handler middleware
   app.use(errorMiddleware);
