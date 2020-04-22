@@ -9,7 +9,8 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
+    loadChildren: './home/home.module'
+    // loadChildren: './home/home.module#HomePageModule'
   }
 ];
 
