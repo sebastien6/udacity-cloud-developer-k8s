@@ -1,8 +1,21 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: ecsdemo-frontend
+  name: apiv0
+  namespace: udagram
+  labels:
+    app: apiv0
+  annotations:
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
 spec:
-  backend:
-    serviceName: ecsdemo-frontend
-    servicePort: 80
+  rules:
+  - host: reverseproxy
+    http:
+      paths:
+      - backend:
+          serviceName: reverseproxy
+          servicePort: 80
+        path: /api/v0
