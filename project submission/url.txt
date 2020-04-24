@@ -1,0 +1,32 @@
+API URL:         http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081
+frontend URL:    http://a20549b44b66b477bbfe42d5e085e04f-1667707796.us-east-1.elb.amazonaws.com:80
+
+
+- All project code is stored in a GitHub repository and a link to the repository has been provided for reviewers. The student uses a CI/CD tool to build the application.
+
+https://github.com/sebastien6/udacity-cloud-developer-k8s
+
+- The README file includes introduction how to setup and deploy the project. It explains the main building blocks and has comments in the important files.
+
+the readme include all the explaination on how to deploy the EKS cluster with RDS and the application in it.
+
+- There is a Dockerfile in repo and the docker image can be build
+
+Dockerfile are in folder of each app. Docker compose file is in the deployment/docker folder
+
+
+- Starting the app as a container on a local system
+
+can be done by using the docker-compose files in deployment/docker folder
+
+- The project can be deployed to a kubernetes cluster
+
+follow the readme file instruction and use yml files in deployment/k8s
+
+- The students can deploy a new version of the application without downtime
+
+new version is deployed automaticaly by CI/CD pipeline with no downtime
+
+- Two versions - 'A' and 'B' of the same application can run simultaneously and serve the traffic
+
+kubectl set image and kubectl rollout command will allow to run version A and B

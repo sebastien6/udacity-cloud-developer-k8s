@@ -1,0 +1,133 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Udagram-k8s",
+		"_postman_id": "bd947e67-021f-14b6-aa9c-1bbfe21e7647",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/api/v0/feed - Get all",
+			"request": {
+				"url": "http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081/api/v0/feed",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v0/feed/0 - Get one",
+			"request": {
+				"url": "http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081/api/v0/feed/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v0/user - User login",
+			"request": {
+				"url": "http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081/api/v0/users/auth/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"user@fake.com\",\"password\":\"notsafe!\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/api/v0/user - Register new user",
+			"request": {
+				"url": "http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081/api/v0/users/auth/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\":\"user@fake.com\",\"password\":\"notsafe!\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "image filter",
+			"request": {
+				"url": {
+					"raw": "http://aa31f4911c46a4659b015b9ce786ef47-478837974.us-east-1.elb.amazonaws.com:8081/api/v0/filteredimage?image_url=https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1278&q=80",
+					"protocol": "http",
+					"host": [
+						"aa31f4911c46a4659b015b9ce786ef47-478837974",
+						"us-east-1",
+						"elb",
+						"amazonaws",
+						"com"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"v0",
+						"filteredimage"
+					],
+					"query": [
+						{
+							"key": "image_url",
+							"value": "https://images.unsplash.com/photo-1532386236358-a33d8a9434e3?ixlib=rb-1.2.1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "auto",
+							"value": "format",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "fit",
+							"value": "crop",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "w",
+							"value": "1278",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "q",
+							"value": "80",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
