@@ -8,6 +8,7 @@ metadata:
 spec:
   selector:
     app: api-image-filter
+    version: 1.0.0
   ports:
    -  protocol: TCP
       port: 8080

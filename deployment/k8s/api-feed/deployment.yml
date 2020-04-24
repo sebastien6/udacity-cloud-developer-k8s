@@ -19,6 +19,7 @@ spec:
     metadata:
       labels:
         app: api-feed
+        version: 1.0.0
     spec:
       containers:
       - image: sebastien6/udacity-udagram-api-feed:latest

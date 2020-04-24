@@ -463,6 +463,18 @@ curl -m3 -v $FRONTEND/
 ```
 open a web browser and go the the frontend URL to enjoy the webapp.
 
+## Update microservice without downtime and Blue/Green Deployment
+
+To deploy two version of a microservice at the same time, current(blue) and updated(green). Open the deployment file of the microservice you'd like to update and increase it version number.
+
+Commit the change, and push to github repository. The CI/CD pipeline will rebuild the image and update the deployment to run the two version at the same time. Traffic will keep going to the initial version.
+
+Update the service file for the microservice to the targeted version, and commit again to start the pipeline. The CI/CD pipeline will send `kubectl apply` command to update the service, and traffic will be redirected to the new version (green).
+
+To Rollback, change back the verion number in service.yml for the microservice to previous version number and re-trigger the pipeline.
+
+All the update and rollback will occur without downtime.
+
 ## Cleanup
 to avoid extra cost, delete your EKS cluster and RDS instance when done with it.
 
